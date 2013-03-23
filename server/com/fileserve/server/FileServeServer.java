@@ -9,6 +9,7 @@ public class FileServeServer {
 	protected Server server;
 	private boolean running = false;
 	private Thread serverStartThread;
+	private FileServeEventDispatcher eventDispatcher = new FileServeEventDispatcher();
 
 	/**
 	 * Starts the server on a different thread.
@@ -27,7 +28,7 @@ public class FileServeServer {
 				FileServeServer.this.startServerThread();
 			}
 		}, "Starting Server");
-		this.getServerStartThread().start();
+		this.serverStartThread.start();
 	}
 
 	/**
@@ -71,7 +72,27 @@ public class FileServeServer {
 		return this.running;
 	}
 
-	public Thread getServerStartThread() {
-		return this.serverStartThread;
+	/**
+	 * 
+	 * @return The event dispatcher for this FileServeServer.
+	 */
+	public FileServeEventDispatcher getEventDispatcher() {
+		return this.eventDispatcher;
+	}
+
+	/**
+	 * @param listener
+	 * @see com.fileserve.server.FileServeEventDispatcher#addListener(com.fileserve.server.FileServeEventListener)
+	 */
+	public void addListener(FileServeEventListener listener) {
+		this.eventDispatcher.addListener(listener);
+	}
+
+	/**
+	 * @param listener
+	 * @see com.fileserve.server.FileServeEventDispatcher#removeListener(com.fileserve.server.FileServeEventListener)
+	 */
+	public void removeListener(FileServeEventListener listener) {
+		this.eventDispatcher.removeListener(listener);
 	}
 }

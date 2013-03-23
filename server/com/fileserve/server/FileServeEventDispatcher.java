@@ -1,17 +1,21 @@
 package com.fileserve.server;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import com.esotericsoftware.kryonet.Connection;
 
-public class FileServeEvents {
+public class FileServeEventDispatcher {
+
+	ArrayList<FileServeEventListener> listeners = new ArrayList<>();
 
 	/**
 	 * Fires the event for when a connection is made.
 	 * @param connection The connection that was made.
 	 */
 	public void fireConnected(Connection connection) {
-
+		for(FileServeEventListener listener : this.listeners)
+			listener.connected(connection);
 	}
 
 	/**
@@ -19,7 +23,8 @@ public class FileServeEvents {
 	 * @param connection The connection that was closed.
 	 */
 	public void fireDisconnected(Connection connection) {
-
+		for(FileServeEventListener listener : this.listeners)
+			listener.disconnected(connection);
 	}
 
 	/**
@@ -28,7 +33,8 @@ public class FileServeEvents {
 	 * @param connection
 	 */
 	public void fireFileTransferStart(File file, Connection connection) {
-
+		for(FileServeEventListener listener : this.listeners)
+			listener.fileTransferStart(file, connection);
 	}
 
 	/**
@@ -37,6 +43,15 @@ public class FileServeEvents {
 	 * @param connection
 	 */
 	public void fireFileTransferEnd(File file, Connection connection) {
+		for(FileServeEventListener listener : this.listeners)
+			listener.fileTransferEnd(file, connection);
+	}
 
+	public void addListener(FileServeEventListener listener) {
+		this.listeners.add(listener);
+	}
+
+	public void removeListener(FileServeEventListener listener) {
+		this.listeners.remove(listener);
 	}
 }

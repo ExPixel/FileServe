@@ -4,7 +4,7 @@ import java.io.File;
 
 import com.esotericsoftware.kryonet.Connection;
 
-public interface FileServeEventSubscriber {
+public interface FileServeEventListener {
 	/**
 	 * Called when a connection is made.
 	 * @param connection The connection that was made.
