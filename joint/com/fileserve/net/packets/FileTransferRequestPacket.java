@@ -1,5 +1,7 @@
 package com.fileserve.net.packets;
 
+import java.nio.file.Path;
+
 public class FileTransferRequestPacket {
-	public String file;
+	public Path file;
 }

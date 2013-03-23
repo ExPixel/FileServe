@@ -1,5 +1,6 @@
 package com.fileserve.server;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Server;
@@ -9,7 +10,14 @@ public class FileServeServer {
 	protected Server server;
 	private boolean running = false;
 	private Thread serverStartThread;
+
 	private FileServeEventDispatcher eventDispatcher = new FileServeEventDispatcher();
+	private FileServeSecurity security = new FileServeSecurity();
+
+	/**
+	 * The top-most accessible directory in the file system.
+	 */
+	File topFile;
 
 	/**
 	 * Starts the server on a different thread.
@@ -81,6 +89,8 @@ public class FileServeServer {
 	}
 
 	/**
+	 * Shorthand for getEventDispatcher().addListener(FileServeEventListener);
+	 * 
 	 * @param listener
 	 * @see com.fileserve.server.FileServeEventDispatcher#addListener(com.fileserve.server.FileServeEventListener)
 	 */
@@ -89,10 +99,40 @@ public class FileServeServer {
 	}
 
 	/**
+	 * Shorthand for getEventDispatcher().removeListener(FileServeEventListener);
+	 * 
 	 * @param listener
 	 * @see com.fileserve.server.FileServeEventDispatcher#removeListener(com.fileserve.server.FileServeEventListener)
 	 */
 	public void removeListener(FileServeEventListener listener) {
 		this.eventDispatcher.removeListener(listener);
+	}
+
+	/**
+	 * @return the topFile
+	 */
+	public File getTopFile() {
+		return this.topFile;
+	}
+
+	/**
+	 * @param topFile the topFile to set
+	 */
+	public void setTopFile(File topFile) {
+		this.topFile = topFile;
+	}
+
+	/**
+	 * @return the server
+	 */
+	public Server getServer() {
+		return this.server;
+	}
+
+	/**
+	 * @return the security
+	 */
+	public FileServeSecurity getSecurity() {
+		return this.security;
 	}
 }

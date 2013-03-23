@@ -19,5 +19,11 @@
 	<classpathentry kind="lib" path="lib/Kryonet/jars/production/objenesis-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/Kryonet/jars/production/reflectasm-1.07.jar"/>
 	<classpathentry kind="lib" path="lib/Kryonet/minlog-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/jasypt-1.9.0/icu4j-3.4.4.jar"/>
+	<classpathentry kind="lib" path="lib/jasypt-1.9.0/jasypt-1.9.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/FileServe/lib/jasypt-1.9.0/jasypt-1.9.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
