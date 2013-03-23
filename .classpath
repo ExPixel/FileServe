@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="server"/>
+    <classpathentry kind="src" path="client"/>
 	<classpathentry kind="src" path="joint"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.4/commons-io-2.4.jar">
@@ -26,5 +27,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/Joda Time/joda-time-2.2.jar"/>
+	<classpathentry kind="lib" path="swing2swt.jar"/>
+	<classpathentry kind="lib" path="lib/swt/swt.jar" sourcepath="lib/swt/src.zip"/>
+	<classpathentry kind="lib" path="lib/opal/opal-0.9.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
