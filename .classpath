@@ -25,5 +25,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/FileServe/lib/jasypt-1.9.0/jasypt-1.9.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/Joda Time/joda-time-2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,12 +1,16 @@
 package com.fileserve.server;
 
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.jasypt.util.text.BasicTextEncryptor;
-import org.jasypt.util.text.TextEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.fileserve.FileServeConstants;
@@ -25,7 +29,9 @@ public class FileServeSecurity {
 
 	private Map<Connection, AttemptSession> attempts = new HashMap<>();
 
-	private TextEncryptor textEncryptor;
+	private StandardPBEStringEncryptor textEncryptor;
+
+	private static final String encryptionAlgorithm = "PBEWITHSHA1ANDRC2_40";
 
 
 
@@ -98,11 +104,50 @@ public class FileServeSecurity {
 	 * 
 	 * @return Gets the encryptor for this security object.
 	 */
-	private TextEncryptor getTextEncryptor() {
+	public StandardPBEStringEncryptor getTextEncryptor() {
 		if(this.textEncryptor == null) {
-			this.textEncryptor = new BasicTextEncryptor();
+			this.textEncryptor = new StandardPBEStringEncryptor();
+
+			/**
+			 * Encrypts using the password specified below.
+			 */
+			String pass = this.getUniqueID(); // It's really just your MAC Address
+			this.textEncryptor.setPassword(pass);
+			this.textEncryptor.setAlgorithm(FileServeSecurity.encryptionAlgorithm);
 		}
 		return this.textEncryptor;
+	}
+
+	/**
+	 * 
+	 * @return The MAC address or a less reliable unique ID that is somewhat persistent.
+	 */
+	public String getUniqueID() {
+		try {
+			InetAddress address = InetAddress.getLocalHost();
+			byte[] ni = NetworkInterface.getByInetAddress(address).getHardwareAddress();
+			BigInteger bigInt = new BigInteger(ni);
+			return FileServeUtils.sha256Hash(bigInt.toString(2));
+		} catch (SocketException e) {
+			e.printStackTrace();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		return this.uniqueIDFallback();
+	}
+
+	/**
+	 * Fallback for getUniqueID(). This may be less reliable because it's stored
+	 * in a place where it can easily be removed or changed.
+	 * @return
+	 */
+	public String uniqueIDFallback() {
+		String r = ServerPreferences.security.get("unique_id", null);
+		if(r == null) {
+			r = FileServeUtils.randomString(32);
+			ServerPreferences.security.put("unique_id", r);
+		}
+		return FileServeUtils.sha256Hash(r);
 	}
 
 	/**
